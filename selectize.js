@@ -480,6 +480,7 @@
 		this.$dropdown      = $dropdown;
 	
 		$control.on('mousedown', function(e) {
+			self.$control_input.css('opacity', 100);
 			if (e.currentTarget === self.$control[0]) {
 				$control_input.trigger('focus');
 			} else {
@@ -587,7 +588,8 @@
 	Selectize.prototype.onKeyDown = function(e) {
 		if (this.isLocked) return;
 		var isInput = e.target === this.$control_input[0];
-	
+		this.$control_input.css('opacity', 100);
+
 		switch (e.keyCode || e.which) {
 			case KEY_ESC:
 				this.blur();
@@ -748,6 +750,7 @@
 			if (value) {
 				this.addItem(value);
 				this.$control_input.val('');
+				return false;
 			}
 		}
 	};
@@ -1332,7 +1335,12 @@
 			// hide the menu if the maximum number of items have been selected
 			if (this.settings.maxItems !== null && this.items.length >= this.settings.maxItems) {
 				this.close();
-				this.blur();
+
+				this.setActiveItem(null);
+				this.ignoreFocus = true;
+				this.$control_input.css('opacity', 0)[0].focus();
+				this.ignoreFocus = false;
+				this.refreshOptions(false);
 			}
 	
 			this.updateOriginalInput();
