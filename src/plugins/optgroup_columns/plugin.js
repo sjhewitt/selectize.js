@@ -39,6 +39,11 @@
                         optgroup = optgroup.next(".optgroup");
                     }
 
+                    // we're in the first or last column, so default to normal behaviour
+                    if(!optgroup.length) {
+                        return original.apply(this, arguments);
+                    }
+
                     options = optgroup.find("[data-selectable]");
                     option = options.eq(Math.min(options.length-1, index));
                     if(option.length) {
